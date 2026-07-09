@@ -1,15 +1,22 @@
 import json
+import os
 import requests
+
+from dotenv import load_dotenv
 from utils.logger import logger
+
+load_dotenv()
 
 
 def extract_data():
-    url = "https://jsonplaceholder.typicode.com/users"
+
+    url = os.getenv("API_URL")
 
     try:
         logger.info("Connecting to API...")
 
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
+
         response.raise_for_status()
 
         data = response.json()
@@ -19,5 +26,5 @@ def extract_data():
 
         logger.info("Data extracted successfully.")
 
-    except Exception as e:
-        logger.error(f"Extraction failed: {e}")
+    except requests.exceptions.RequestException as e:
+        logger.error(f"API Error: {e}")
