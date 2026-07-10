@@ -63,6 +63,15 @@ enterprise-etl-pipeline/
 | Documentation | Planned |
 
 ---
+## Team Task Allocation
+
+| No. | Team Member | Assigned Task |
+|----:|-------------|---------------|
+| 1 | **Shahanaz P** | Repository setup, GitHub management, project planning, code integration, documentation, final testing, and deployment. |
+| 2 | **yuvadarshini** | Develop the API Extraction module, including API integration, pagination, rate-limit handling, and raw JSON data storage. |
+| 3 | **kavitha** | Implement the Data Transformation module, including data cleaning, validation, null value handling, and standardization. |
+| 4 | **varshitha** | Design the database schema, develop SQLAlchemy models, configure PostgreSQL, and implement data loading (insert/upsert). |
+| 5 | **manasa v** | Develop unit tests using Pytest, improve logging and exception handling, and assist with final project validation. |
 
 **Project Name**
 
