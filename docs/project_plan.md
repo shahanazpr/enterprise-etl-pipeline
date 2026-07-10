@@ -63,15 +63,15 @@ enterprise-etl-pipeline/
 | Documentation | Planned |
 
 ---
-## Team Task Allocation
+## Team Allocation & Responsibilities
 
-| No. | Team Member | Assigned Task |
-|----:|-------------|---------------|
-| 1 | **Shahanaz P** | Repository setup, GitHub management, project planning, code integration, documentation, final testing, and deployment. |
-| 2 | **yuvadarshini** | Develop the API Extraction module, including API integration, pagination, rate-limit handling, and raw JSON data storage. |
-| 3 | **kavitha** | Implement the Data Transformation module, including data cleaning, validation, null value handling, and standardization. |
-| 4 | **varshitha** | Design the database schema, develop SQLAlchemy models, configure PostgreSQL, and implement data loading (insert/upsert). |
-| 5 | **manasa v** | Develop unit tests using Pytest, improve logging and exception handling, and assist with final project validation. |
+| Role / Owner | Domain | Assigned Responsibilities |
+|---------------|---------------------------|---------------------------|
+| **shahanaz p** | Project Management & Integration | - Repository setup and GitHub management<br>- Project planning and task allocation<br>- Code integration and merge requests<br>- Documentation and deployment<br>- Overall project coordination |
+| **yuvadarshini** | Data Extraction | - Develop API extraction module<br>- Handle API authentication and pagination<br>- Manage rate limiting and retries<br>- Store raw extracted data |
+| **kavitha** | Data Transformation | - Clean and preprocess extracted data<br>- Perform data validation using Pydantic<br>- Handle missing and duplicate values<br>- Standardize data formats |
+| **varshitha** | Database & Data Loading | - Design PostgreSQL database schema<br>- Develop SQLAlchemy models<br>- Implement data loading (insert/upsert)<br>- Optimize database queries |
+| **manasa v** | Testing & Automation | - Write unit tests using Pytest<br>- Configure logging and exception handling<br>- Implement Apache Airflow DAGs<br>- Support deployment and final validation |
 
 **Project Name**
 
