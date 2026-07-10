@@ -102,4 +102,12 @@ Upcoming
 
 Shahanaz p
 
+## Team Members
+
+shahanaz p
+yuvadharshini
+kavitha
+manasa v
+varshitha
+
 Developed as part of the Zaalima Development Internship.
