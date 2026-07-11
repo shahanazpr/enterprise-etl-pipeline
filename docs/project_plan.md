@@ -66,13 +66,12 @@ enterprise-etl-pipeline/
 ## Team Allocation & Responsibilities
 
 | Role / Owner | Domain | Assigned Responsibilities |
-|---------------|---------------------------|---------------------------|
-| **shahanaz p** | Project Management & Integration | - Repository setup and GitHub management<br>- Project planning and task allocation<br>- Code integration and merge requests<br>- Documentation and deployment<br>- Overall project coordination |
-| **yuvadarshini** | Data Extraction | - Develop API extraction module<br>- Handle API authentication and pagination<br>- Manage rate limiting and retries<br>- Store raw extracted data |
-| **kavitha** | Data Transformation | - Clean and preprocess extracted data<br>- Perform data validation using Pydantic<br>- Handle missing and duplicate values<br>- Standardize data formats |
-| **varshitha** | Database & Data Loading | - Design PostgreSQL database schema<br>- Develop SQLAlchemy models<br>- Implement data loading (insert/upsert)<br>- Optimize database queries |
-| **manasa v** | Testing & Automation | - Write unit tests using Pytest<br>- Configure logging and exception handling<br>- Implement Apache Airflow DAGs<br>- Support deployment and final validation |
-
+|--------------|--------|---------------------------|
+| **Shahanaz P (Team Lead)** | Project Integration & ETL Orchestration | - Create the ETL pipeline structure.<br>- Develop the `main.py` orchestration.<br>- Integrate the Extract, Transform, and Load modules.<br>- Configure project settings and workflow.<br>- Review code, merge pull requests, and maintain documentation. |
+| **Yuvadarshini** | Data Extraction | - Develop the API extraction module.<br>- Handle API authentication and pagination.<br>- Implement retry logic using Tenacity.<br>- Store raw extracted data. |
+| **Kavitha** | Data Transformation | - Clean and preprocess extracted data.<br>- Validate data using Pydantic.<br>- Handle missing and duplicate values.<br>- Standardize data formats.<br>- Develop the transformation pipeline. |
+| **Varshitha** | Database & Data Loading | - Design the PostgreSQL database schema.<br>- Develop SQLAlchemy models.<br>- Configure database connectivity.<br>- Implement insert/upsert data loading.<br>- Optimize database queries. |
+| **Manasa V** | Testing & Automation | - Write unit tests using Pytest.<br>- Configure logging and exception handling.<br>- Create the Apache Airflow DAG.<br>- Validate the complete ETL workflow. |
 **Project Name**
 
 Enterprise ETL Pipeline
