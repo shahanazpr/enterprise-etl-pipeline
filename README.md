@@ -67,6 +67,18 @@ pip install -r requirements.txt
 
 ---
 
+## How to Run
+
+1. Clone the repository.
+2. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Configure the `.env` file.
+4. Run the ETL pipeline.
+
 ## Run
 
 ```bash
