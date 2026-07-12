@@ -1,6 +1,7 @@
 import json
 import os
 import requests
+from tenacity import retry, stop_after_attempt, wait_fixed
 
 from dotenv import load_dotenv
 from utils.logger import logger
@@ -8,6 +9,11 @@ from models.user_model import User
 
 load_dotenv()
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_fixed(2),
+    reraise=True
+)
 
 def extract_data():
 
