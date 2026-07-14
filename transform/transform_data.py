@@ -25,4 +25,5 @@ def transform_data():
     # Save transformed data
     df.to_csv("data/users.csv", index=False)
 
-    logger.info("Data transformed and CSV created successfully!")
+    logger.info("CSV created successfully!")
+    

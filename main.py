@@ -7,8 +7,10 @@ def main():
     print("\n===== Enterprise ETL Pipeline =====")
 
     extract_data()
-    transform_data()
-    load_data()
+
+    df = transform_data()
+
+    load_data(df)
 
     print("Pipeline completed successfully!")
 
