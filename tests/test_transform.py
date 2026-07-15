@@ -8,7 +8,7 @@ def test_transform_data():
     os.makedirs("data", exist_ok=True)
 
     df = pd.DataFrame({
-        "name": [" manasa ", "manasa "],
+        "name": [" Testuser ", "Testuser "],
         "username": [" user1 ", "user1 "],
         "email": ["TEST@MAIL.COM", "TEST@MAIL.COM"]
     })
@@ -20,7 +20,7 @@ def test_transform_data():
     output = pd.read_csv("data/users.csv")
 
     assert len(output) == 2
-    assert output.loc[0, "name"] == "Manasa"
+    assert output.loc[0, "name"] == "Testuser"
     assert output.loc[0, "email"] == "test@mail.com"
-    assert output.loc[1, "name"] == "Manasa"
+    assert output.loc[1, "name"] == "Testuser"
     assert output.loc[1, "email"] == "test@mail.com"
