@@ -10,7 +10,7 @@ def test_load_data():
     os.makedirs("data", exist_ok=True)
 
     df = pd.DataFrame({
-        "name": ["Manasa"],
+        "name": ["Testuser"],
         "username": ["user1"],
         "email": ["abc@gmail.com"]
     })
@@ -26,4 +26,4 @@ def test_load_data():
     conn.close()
 
     assert len(result) == 1
-    assert result.iloc[0]["name"] == "Manasa"
+    assert result.iloc[0]["name"] == "Testuser"

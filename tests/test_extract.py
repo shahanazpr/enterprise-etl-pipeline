@@ -13,7 +13,7 @@ class MockResponse:
         return [
             {
                 "id": 1,
-                "name": "Manasa",
+                "name": "Testuser",
                 "username": "user1",
                 "email": "abc@gmail.com"
             }
@@ -36,4 +36,4 @@ def test_extract_data(monkeypatch):
         data = json.load(f)
 
     assert len(data) == 1
-    assert data[0]["name"] == "Manasa"
+    assert data[0]["name"] == "Testuser"
