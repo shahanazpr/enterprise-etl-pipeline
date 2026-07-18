@@ -4,7 +4,7 @@
 
 This project is a production-style ETL (Extract, Transform, Load) pipeline developed in Python.
 
-The pipeline extracts user data from an external REST API, transforms it into a clean format, and loads it into a database for further analysis.
+The pipeline extracts user data from an external REST API, transforms it into a clean format, and loads it into a PostgreSQL database using SQLAlchemy for further analysis.
 
 This project is being developed as part of the Zaalima Development Internship.
 
@@ -14,9 +14,10 @@ This project is being developed as part of the Zaalima Development Internship.
 
 - Extract data from REST APIs
 - Transform JSON data into CSV
-- Load data into SQLite database
+- Load data into PostgreSQL
+- SQLAlchemy ORM integration
+- Pydantic configuration using `.env`
 - Logging support
-- Environment variable configuration using `.env`
 - Modular project structure
 - Git version control
 
@@ -27,8 +28,9 @@ This project is being developed as part of the Zaalima Development Internship.
 - Python 3.14
 - Requests
 - Pandas
-- SQLite
-- Python-dotenv
+- PostgreSQL
+- SQLAlchemy
+- Pydantic Settings
 - Logging
 
 ---
@@ -46,8 +48,10 @@ enterprise-etl-pipeline/
 ├── tests/
 ├── transform/
 ├── utils/
-├── .env
-├── .gitignore
+├── .env.example
+├── config.py
+├── database.py
+├── create_table.py
 ├── main.py
 ├── README.md
 └── requirements.txt
@@ -67,19 +71,33 @@ pip install -r requirements.txt
 
 ---
 
-## How to Run
+## Environment Configuration
 
-1. Clone the repository.
-2. Install dependencies:
+Create a `.env` file with the following values:
 
-```bash
-pip install -r requirements.txt
+```env
+API_URL=https://jsonplaceholder.typicode.com/users
+
+DB_USER=postgres
+DB_PASSWORD=your_password
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=enterprise_etl
+
+LOG_LEVEL=INFO
 ```
 
-3. Configure the `.env` file.
-4. Run the ETL pipeline.
+---
 
-## Run
+## How to Run
+
+Create the database tables:
+
+```bash
+python create_table.py
+```
+
+Run the ETL pipeline:
 
 ```bash
 python main.py
@@ -89,20 +107,19 @@ python main.py
 
 ## Current Status
 
-Completed
+### Completed
 
 - Project setup
 - API Extraction
 - Data Transformation
-- Database Loading
+- PostgreSQL Database Integration
+- SQLAlchemy ORM
+- Pydantic Configuration
 - Logging
 - GitHub Integration
 
-Upcoming
+### Upcoming
 
-- Pydantic Validation
-- SQLAlchemy
-- PostgreSQL
 - Retry Logic
 - Apache Airflow
 - Docker
@@ -112,6 +129,6 @@ Upcoming
 
 ## Author
 
-Shahanaz p
+**Shahanaz P**
 
 Developed as part of the Zaalima Development Internship.
