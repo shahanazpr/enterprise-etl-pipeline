@@ -1,21 +1,39 @@
-import sqlite3
 import pandas as pd
+from sqlalchemy.orm import Session
+
+from database import SessionLocal
+from models.user_model import User
 from utils.logger import logger
 
 
 def load_data():
+    db: Session = SessionLocal()
+
     try:
         logger.info("Reading CSV file...")
 
         df = pd.read_csv("data/users.csv")
 
-        conn = sqlite3.connect("data/users.db")
+        # Clear existing data
+        db.query(User).delete()
 
-        df.to_sql("users", conn, if_exists="replace", index=False)
+        # Insert data into PostgreSQL
+        for _, row in df.iterrows():
+            user = User(
+                id=int(row["id"]),
+                name=row["name"],
+                username=row["username"],
+                email=row["email"],
+            )
+            db.add(user)
 
-        conn.close()
+        db.commit()
 
-        logger.info("Data loaded into SQLite successfully!")
+        logger.info("Data loaded into PostgreSQL successfully!")
 
     except Exception as e:
+        db.rollback()
         logger.error(f"Loading failed: {e}")
+
+    finally:
+        db.close()
