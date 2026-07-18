@@ -2,13 +2,15 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    API_URL: str
-    DB_USER: str
-    DB_PASSWORD: str
-    DB_HOST: str
-    DB_PORT: int
-    DB_NAME: str
-    LOG_LEVEL: str
+    API_URL: str = "https://jsonplaceholder.typicode.com/users"
+
+    DB_USER: str = "postgres"
+    DB_PASSWORD: str = "702526"
+    DB_HOST: str = "localhost"
+    DB_PORT: int = 5432
+    DB_NAME: str = "enterprise_etl"
+
+    LOG_LEVEL: str = "INFO"
 
     model_config = SettingsConfigDict(
         env_file=".env",

@@ -1,27 +1,39 @@
-from sqlalchemy import create_engine
-from dotenv import load_dotenv
-import os
+import pandas as pd
+from sqlalchemy.orm import Session
 
-load_dotenv()
-
-DATABASE_URL = (
-    f"postgresql+psycopg2://"
-    f"{os.getenv('DB_USER')}:"
-    f"{os.getenv('DB_PASSWORD')}@"
-    f"{os.getenv('DB_HOST')}:"
-    f"{os.getenv('DB_PORT')}/"
-    f"{os.getenv('DB_NAME')}"
-)
-
-engine = create_engine(DATABASE_URL)
+from database import SessionLocal
+from models.user_model import User
+from utils.logger import logger
 
 
-def load_data(df):
-    df.to_sql(
-        "users",
-        engine,
-        if_exists="replace",
-        index=False
-    )
+def load_data():
+    db: Session = SessionLocal()
 
-    print("Data loaded into PostgreSQL successfully!")
+    try:
+        logger.info("Reading CSV file...")
+
+        df = pd.read_csv("data/users.csv")
+
+        # Clear existing data
+        db.query(User).delete()
+
+        # Insert data into PostgreSQL
+        for _, row in df.iterrows():
+            user = User(
+                id=int(row["id"]),
+                name=row["name"],
+                username=row["username"],
+                email=row["email"],
+            )
+            db.add(user)
+
+        db.commit()
+
+        logger.info("Data loaded into PostgreSQL successfully!")
+
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Loading failed: {e}")
+
+    finally:
+        db.close()
