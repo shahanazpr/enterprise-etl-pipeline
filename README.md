@@ -133,15 +133,15 @@ python main.py
 
 ## Team Members
 
-shahanaz p
+Shahanaz p
 
-yuvadharshini R
+Yuvadharshini R
 
-kavitha
+Kavitha
 
-manasa v
+Manasa v
 
-varshitha
+Varshitha
 
 
 
