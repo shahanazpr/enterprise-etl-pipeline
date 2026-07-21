@@ -1,5 +1,6 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
+import pandas as pd
 import os
 
 load_dotenv()
@@ -17,11 +18,27 @@ engine = create_engine(DATABASE_URL)
 
 
 def load_data(df):
-    df.to_sql(
-        "users",
-        engine,
-        if_exists="replace",
-        index=False
-    )
+    # Read existing user IDs
+    try:
+        existing = pd.read_sql(
+            text("SELECT id FROM users"),
+            engine
+        )
+    except Exception:
+        existing = pd.DataFrame(columns=["id"])
 
-    print("Data loaded into PostgreSQL successfully!")
+    # Keep only new records
+    if not existing.empty:
+        df = df[~df["id"].isin(existing["id"])]
+
+    # Load only if new records exist
+    if not df.empty:
+        df.to_sql(
+            "users",
+            engine,
+            if_exists="append",
+            index=False
+        )
+        print(f"{len(df)} new records loaded into PostgreSQL.")
+    else:
+        print("No new records to load.")

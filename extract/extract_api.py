@@ -9,12 +9,12 @@ from models.user_model import User
 
 load_dotenv()
 
+
 @retry(
     stop=stop_after_attempt(3),
     wait=wait_fixed(2),
     reraise=True
 )
-
 def extract_data():
 
     url = os.getenv("API_URL")
@@ -23,7 +23,6 @@ def extract_data():
         logger.info("Connecting to API...")
 
         response = requests.get(url, timeout=10)
-
         response.raise_for_status()
 
         data = response.json()
@@ -42,6 +41,8 @@ def extract_data():
 
     except requests.exceptions.RequestException as e:
         logger.error(f"API Error: {e}")
+        raise
 
     except Exception as e:
         logger.error(f"Validation Error: {e}")
+        raise

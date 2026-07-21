@@ -26,4 +26,6 @@ def transform_data():
     df.to_csv("data/users.csv", index=False)
 
     logger.info("CSV created successfully!")
-    
+
+    # Return the transformed DataFrame
+    return df
