@@ -12,4 +12,4 @@ __pycache__/
 *.log
 
 # Python virtual environment
-venv/
+.venv/
