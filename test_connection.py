@@ -1,10 +1,6 @@
-from database.connection import engine
+from database import engine
+from sqlalchemy import text
 
-try:
-    connection = engine.connect()
-    print("✅ Database connection successful!")
-    connection.close()
-
-except Exception as e:
-    print("❌ Connection failed:")
-    print(e)
+with engine.connect() as conn:
+    result = conn.execute(text("SELECT version();"))
+    print(result.fetchone()[0])
