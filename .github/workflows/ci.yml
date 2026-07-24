@@ -10,23 +10,6 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    services:
-  postgres:
-    image: postgres:16
-
-    env:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 702526
-      POSTGRES_DB: enterprise_etl
-
-    ports:
-      - 5432:5432
-
-    options: >-
-      --health-cmd="pg_isready -U postgres"
-      --health-interval=10s
-      --health-timeout=5s
-      --health-retries=5
 
     steps:
       # 1. Checkout repository code so the runner can access it
