@@ -42,6 +42,9 @@ def extract_data():
 
     except requests.exceptions.RequestException as e:
         logger.error(f"API Error: {e}")
+        raise
 
     except Exception as e:
         logger.error(f"Validation Error: {e}")
+        raise
+        
