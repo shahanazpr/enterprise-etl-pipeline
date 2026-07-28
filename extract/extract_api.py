@@ -32,14 +32,11 @@ def extract_data():
             validated_user = User(**user)
             validated_data.append(validated_user.model_dump())
 
-        # Ensure the output directory exists before writing
         os.makedirs("data", exist_ok=True)
         with open("data/users.json", "w") as file:
             json.dump(validated_data, file, indent=4)
 
         logger.info("Data extracted and validated successfully.")
-        
-        # Return the validated data so tests can verify it
         return validated_data
 
     except requests.exceptions.RequestException as e:
