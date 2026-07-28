@@ -14,13 +14,16 @@ load_dotenv()
     wait=wait_fixed(2),
     reraise=True
 )
+
 def extract_data():
+
     url = os.getenv("API_URL")
 
     try:
         logger.info("Connecting to API...")
 
         response = requests.get(url, timeout=10)
+
         response.raise_for_status()
 
         data = response.json()
@@ -32,17 +35,13 @@ def extract_data():
             validated_user = User(**user)
             validated_data.append(validated_user.model_dump())
 
-        os.makedirs("data", exist_ok=True)
         with open("data/users.json", "w") as file:
             json.dump(validated_data, file, indent=4)
 
         logger.info("Data extracted and validated successfully.")
-        return validated_data
 
     except requests.exceptions.RequestException as e:
         logger.error(f"API Error: {e}")
-        raise
 
     except Exception as e:
         logger.error(f"Validation Error: {e}")
-        raise
