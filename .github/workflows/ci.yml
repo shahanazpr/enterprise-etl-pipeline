@@ -1,39 +1,55 @@
 name: CI Pipeline
 
-# Trigger the workflow on pushes or pull requests to main/master branches
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "issue-17-github-actions" ]
   pull_request:
-    branches: [ "main"]
+    branches: [ "main", "issue-17-github-actions" ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    # Add a PostgreSQL service container here
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-      # 1. Checkout repository code so the runner can access it
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10' # Adjust this if your project uses a different version
+          python-version: '3.10'
           cache: 'pip'
 
-      # 3. Install project dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          # Install pytest if it's not already in your requirements.txt
           pip install pytest
 
-      # 4. Execute unit tests
       - name: Run unit tests
         run: |
           pytest
         env:
           PYTHONPATH: ${{ github.workspace }}
+          # Pass test database environment variables if your code uses them
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_USER: postgres
+          DB_PASSWORD: password
+          DB_NAME: test_db
