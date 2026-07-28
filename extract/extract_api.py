@@ -30,7 +30,7 @@ def extract_data():
 
         for user in data:
             validated_user = User(**user)
-            validated_data.append(validated_user.dict())
+            validated_data.append(validated_user.model_dump())
 
         # Ensure the output directory exists before writing
         os.makedirs("data", exist_ok=True)
