@@ -19,7 +19,7 @@ def transform_data():
         logger.info(f"Records before cleaning: {len(df)}")
 
         # Remove duplicate records
-        df.drop_duplicates(inplace=True)
+        df.drop_duplicates(subset=["id"], inplace=True)
 
         # Remove leading/trailing spaces
         df["name"] = df["name"].str.strip()
