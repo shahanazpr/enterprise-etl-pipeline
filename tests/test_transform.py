@@ -8,9 +8,12 @@ def test_transform_data():
     os.makedirs("data", exist_ok=True)
 
     df = pd.DataFrame({
+        "id": [1, 2],
         "name": [" Testuser ", "Testuser "],
         "username": [" user1 ", "user1 "],
-        "email": ["TEST@MAIL.COM", "TEST@MAIL.COM"]
+        "email": ["TEST@MAIL.COM", "TEST@MAIL.COM"],
+        "phone": ["123-456", "789-012"],
+        "website": ["test1.com", "test2.com"]
     })
 
     df.to_json("data/users.json")

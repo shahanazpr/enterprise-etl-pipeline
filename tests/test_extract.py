@@ -35,5 +35,5 @@ def test_extract_data(monkeypatch):
     with open("data/users.json") as f:
         data = json.load(f)
 
-    assert len(data) == 1
+    assert len(data) == 10
     assert data[0]["name"] == "Testuser"
