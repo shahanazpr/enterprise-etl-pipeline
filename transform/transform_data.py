@@ -4,7 +4,7 @@ import pandas as pd
 
 from utils.logger import logger
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def transform_data():

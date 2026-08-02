@@ -7,7 +7,7 @@ from tenacity import retry, stop_after_attempt, wait_fixed
 from config import settings
 from utils.logger import logger
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 @retry(
@@ -44,5 +44,6 @@ def extract_data():
         raise
 
     except Exception as e:
-        logger.error(f"Extraction Error: {e}")
+        logger.error(f"Validation Error: {e}")
         raise
+        
