@@ -7,7 +7,7 @@ from database import SessionLocal
 from models.user import User
 from utils.logger import logger
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 def load_data():
