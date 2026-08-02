@@ -6,7 +6,7 @@ from tenacity import retry, stop_after_attempt, wait_fixed
 from config import settings
 from utils.logger import logger
 
-BASE_DIR = "/opt/airflow/project"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 @retry(

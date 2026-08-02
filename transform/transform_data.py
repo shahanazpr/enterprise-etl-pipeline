@@ -3,7 +3,7 @@ import pandas as pd
 
 from utils.logger import logger
 
-BASE_DIR = "/opt/airflow/project"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def transform_data():
