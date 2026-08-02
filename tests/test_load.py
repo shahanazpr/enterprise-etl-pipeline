@@ -1,20 +1,15 @@
 import os
 import pandas as pd
-from pathlib import Path
 from load.load_data import load_data
 from database import SessionLocal
 from models.user import User
 
 
 def test_load_data():
-    # Ensure the data directory exists globally relative to the workspace root
-    data_dir = Path("data")
-    data_dir.mkdir(parents=True, exist_ok=True)
+    # Ensure directory exists matching production code expectation
+    os.makedirs("data", exist_ok=True)
 
-    # Define the exact file path
-    csv_file = data_dir / "users.csv"
-
-    # Make sure your test DataFrame includes ALL required columns
+    # DataFrame with all required columns
     df = pd.DataFrame({
         "id": [1],
         "name": ["Testuser"],
@@ -24,19 +19,17 @@ def test_load_data():
         "website": ["test.com"]
     })
 
-    # Save CSV using the explicit path
-    df.to_csv(csv_file, index=False)
+    # Save using the exact relative path string
+    df.to_csv("data/users.csv", index=False)
 
-    # Run the load function (this inserts into PostgreSQL)
+    # Run the load function
     load_data()
 
-    # Query the PostgreSQL database using SQLAlchemy session
+    # Query the database
     db = SessionLocal()
     try:
         users = db.query(User).all()
-        
         assert len(users) >= 1
-        # Check if our test user exists in the database
         names = [u.name for u in users]
         assert "Testuser" in names
     finally:
