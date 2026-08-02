@@ -48,6 +48,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
           # Pass test database environment variables if your code uses them
+          API_URL: https://jsonplaceholder.typicode.com/users
           DB_HOST: localhost
           DB_PORT: 5432
           DB_USER: postgres
