@@ -2,9 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ "main", "issue-17-github-actions" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main", "issue-17-github-actions" ]
+    branches: [ main ]
 
 jobs:
   build-and-test:
