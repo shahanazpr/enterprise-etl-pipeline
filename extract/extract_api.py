@@ -1,12 +1,13 @@
 import json
 import os
+from pathlib import Path
 import requests
 from tenacity import retry, stop_after_attempt, wait_fixed
 
 from config import settings
 from utils.logger import logger
 
-BASE_DIR = "/opt/airflow/project"
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 @retry(
@@ -17,6 +18,10 @@ BASE_DIR = "/opt/airflow/project"
 def extract_data():
 
     url = settings.API_URL
+
+    # Ensure the data directory exists dynamically before writing to it
+    data_dir = os.path.join(BASE_DIR, "data")
+    os.makedirs(data_dir, exist_ok=True)
 
     json_path = os.path.join(BASE_DIR, "data", "users.json")
 

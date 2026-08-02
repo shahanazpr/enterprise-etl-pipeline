@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import pandas as pd
 from sqlalchemy.orm import Session
 
@@ -6,7 +7,7 @@ from database import SessionLocal
 from models.user import User
 from utils.logger import logger
 
-BASE_DIR = "/opt/airflow/project"
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 def load_data():
