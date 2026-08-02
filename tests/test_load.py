@@ -1,15 +1,19 @@
 import os
 import pandas as pd
+from pathlib import Path
 from load.load_data import load_data
 from database import SessionLocal
 from models.user import User
 
 
 def test_load_data():
-    # Ensure directory exists matching production code expectation
-    os.makedirs("data", exist_ok=True)
+    # Get the project root directory dynamically
+    root_dir = Path(__file__).parent.parent
+    data_dir = root_dir / "data"
+    data_dir.mkdir(parents=True, exist_ok=True)
 
-    # DataFrame with all required columns
+    csv_file = data_dir / "users.csv"
+
     df = pd.DataFrame({
         "id": [1],
         "name": ["Testuser"],
@@ -19,13 +23,13 @@ def test_load_data():
         "website": ["test.com"]
     })
 
-    # Save using the exact relative path string
-    df.to_csv("data/users.csv", index=False)
+    # Save CSV explicitly to the absolute path
+    df.to_csv(csv_file, index=False)
 
-    # Run the load function
+    # Run load function
     load_data()
 
-    # Query the database
+    # Verify via DB session
     db = SessionLocal()
     try:
         users = db.query(User).all()
