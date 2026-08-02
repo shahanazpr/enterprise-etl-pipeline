@@ -51,5 +51,5 @@ jobs:
           DB_HOST: localhost
           DB_PORT: 5432
           DB_USER: postgres
-          DB_PASSWORD: password
+          DB_PASSWORD: 702526
           DB_NAME: test_db
