@@ -16,7 +16,7 @@ def test_transform_data():
         "website": ["test1.com", "test2.com"]
     })
 
-    df.to_json("data/users.json")
+    df.to_json("data/users.json", orient="records"))
 
     transform_data()
 
