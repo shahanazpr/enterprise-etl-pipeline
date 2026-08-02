@@ -1,21 +1,49 @@
-import sqlite3
+import os
 import pandas as pd
+from sqlalchemy.orm import Session
+
+from database import SessionLocal
+from models.user import User
 from utils.logger import logger
+
+BASE_DIR = "/opt/airflow/project"
 
 
 def load_data():
+    db: Session = SessionLocal()
+
+    csv_file = os.path.join(BASE_DIR, "data", "users.csv")
+
     try:
         logger.info("Reading CSV file...")
 
-        df = pd.read_csv("data/users.csv")
+        df = pd.read_csv(csv_file)
 
-        conn = sqlite3.connect("data/users.db")
+        logger.info(f"Records to load: {len(df)}")
 
-        df.to_sql("users", conn, if_exists="replace", index=False)
+        # Clear existing data
+        db.query(User).delete()
 
-        conn.close()
+        # Insert new data
+        for _, row in df.iterrows():
+            user = User(
+                id=int(row["id"]),
+                name=row["name"],
+                username=row["username"],
+                email=row["email"],
+                phone=row["phone"],
+                website=row["website"],
+            )
+            db.add(user)
 
-        logger.info("Data loaded into SQLite successfully!")
+        db.commit()
+
+        logger.info(f"Successfully loaded {len(df)} records into PostgreSQL.")
 
     except Exception as e:
+        db.rollback()
         logger.error(f"Loading failed: {e}")
+        raise
+
+    finally:
+        db.close()

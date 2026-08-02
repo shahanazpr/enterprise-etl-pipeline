@@ -6,3 +6,8 @@ class User(BaseModel):
     name: str
     username: str
     email: EmailStr
+    phone: str
+    website: str
+    city: str
+    zipcode: str
+    company_name: str

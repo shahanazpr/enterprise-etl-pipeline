@@ -3,42 +3,36 @@ import os
 import requests
 from tenacity import retry, stop_after_attempt, wait_fixed
 
-from dotenv import load_dotenv
+from config import settings
 from utils.logger import logger
-from models.user_model import User
 
-load_dotenv()
+BASE_DIR = "/opt/airflow/project"
+
 
 @retry(
     stop=stop_after_attempt(3),
     wait=wait_fixed(2),
-    reraise=True
+    reraise=True,
 )
-
 def extract_data():
 
-    url = os.getenv("API_URL")
+    url = settings.API_URL
+
+    json_path = os.path.join(BASE_DIR, "data", "users.json")
 
     try:
-        logger.info("Connecting to API...")
+        logger.info(f"Connecting to API: {url}")
 
         response = requests.get(url, timeout=10)
-
         response.raise_for_status()
 
         data = response.json()
 
-        # Validate API data using Pydantic
-        validated_data = []
+        with open(json_path, "w") as file:
+            json.dump(data, file, indent=4)
 
-        for user in data:
-            validated_user = User(**user)
-            validated_data.append(validated_user.model_dump())
-
-        with open("data/users.json", "w") as file:
-            json.dump(validated_data, file, indent=4)
-
-        logger.info("Data extracted and validated successfully.")
+        logger.info(f"Successfully extracted {len(data)} records.")
+        logger.info(f"JSON saved at: {json_path}")
 
     except requests.exceptions.RequestException as e:
         logger.error(f"API Error: {e}")
