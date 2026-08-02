@@ -1,44 +1,51 @@
-from sqlalchemy import create_engine, text
-from dotenv import load_dotenv
-import pandas as pd
 import os
+from pathlib import Path
+import pandas as pd
+from sqlalchemy.orm import Session
 
-load_dotenv()
-
-DATABASE_URL = (
-    f"postgresql+psycopg2://"
-    f"{os.getenv('DB_USER')}:"
-    f"{os.getenv('DB_PASSWORD')}@"
-    f"{os.getenv('DB_HOST')}:"
-    f"{os.getenv('DB_PORT')}/"
-    f"{os.getenv('DB_NAME')}"
-)
-
-engine = create_engine(DATABASE_URL)
+from database import SessionLocal
+from models.user import User
+from utils.logger import logger
 
 
-def load_data(df):
-    # Read existing user IDs
+BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+def load_data():
+    db: Session = SessionLocal()
+
+    csv_file = os.path.join(BASE_DIR, "data", "users.csv")
+
     try:
-        existing = pd.read_sql(
-            text("SELECT id FROM users"),
-            engine
-        )
-    except Exception:
-        existing = pd.DataFrame(columns=["id"])
+        logger.info("Reading CSV file...")
 
-    # Keep only new records
-    if not existing.empty:
-        df = df[~df["id"].isin(existing["id"])]
+        df = pd.read_csv(csv_file)
 
-    # Load only if new records exist
-    if not df.empty:
-        df.to_sql(
-            "users",
-            engine,
-            if_exists="append",
-            index=False
-        )
-        print(f"{len(df)} new records loaded into PostgreSQL.")
-    else:
-        print("No new records to load.")
+        logger.info(f"Records to load: {len(df)}")
+
+        # Clear existing data
+        db.query(User).delete()
+
+        # Insert new data
+        for _, row in df.iterrows():
+            user = User(
+                id=int(row["id"]),
+                name=row["name"],
+                username=row["username"],
+                email=row["email"],
+                phone=row["phone"],
+                website=row["website"],
+            )
+            db.add(user)
+
+        db.commit()
+
+        logger.info(f"Successfully loaded {len(df)} records into PostgreSQL.")
+
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Loading failed: {e}")
+        raise
+
+    finally:
+        db.close()

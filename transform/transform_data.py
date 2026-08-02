@@ -1,31 +1,59 @@
+import os
+from pathlib import Path
 import pandas as pd
+
 from utils.logger import logger
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def transform_data():
-    logger.info("Reading JSON file...")
+     # Ensure the data directory exists
+    data_dir = os.path.join(BASE_DIR, "data")
+    os.makedirs(data_dir, exist_ok=True)
 
-    # Read JSON file
-    df = pd.read_json("data/users.json")
+    input_file = os.path.join(BASE_DIR, "data", "users.json")
+    output_file = os.path.join(BASE_DIR, "data", "users.csv")
 
-    logger.info(f"Rows loaded: {len(df)}")
+    try:
+        logger.info("Reading JSON file...")
 
-    # Remove duplicate rows
-    df.drop_duplicates(inplace=True)
+        df = pd.read_json(input_file)
 
-    # Remove extra spaces
-    df["name"] = df["name"].str.strip()
-    df["username"] = df["username"].str.strip()
-    df["email"] = df["email"].str.strip()
+        logger.info(f"Records before cleaning: {len(df)}")
 
-    # Standardize text
-    df["name"] = df["name"].str.title()
-    df["email"] = df["email"].str.lower()
+        # Remove duplicate records
+        df.drop_duplicates(subset=["id"], inplace=True)
 
-    # Save transformed data
-    df.to_csv("data/users.csv", index=False)
+        # Remove leading/trailing spaces
+        df["name"] = df["name"].str.strip()
+        df["username"] = df["username"].str.strip()
+        df["email"] = df["email"].str.strip()
 
-    logger.info("CSV created successfully!")
+        # Standardize text
+        df["name"] = df["name"].str.title()
+        df["email"] = df["email"].str.lower()
 
-    # Return the transformed DataFrame
-    return df
+        # Keep only required columns
+        df = df[
+            [
+                "id",
+                "name",
+                "username",
+                "email",
+                "phone",
+                "website",
+            ]
+        ]
+
+        df.to_csv(output_file, index=False)
+
+        logger.info(f"Transformation completed successfully.")
+        logger.info(f"CSV saved at: {output_file}")
+        logger.info(f"Records after cleaning: {len(df)}")
+
+    except Exception as e:
+        logger.error(f"Transformation failed: {e}")
+        raise
