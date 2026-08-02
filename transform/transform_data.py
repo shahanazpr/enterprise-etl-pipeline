@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import pandas as pd
 
 from utils.logger import logger
@@ -7,6 +8,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def transform_data():
+     # Ensure the data directory exists
+    data_dir = os.path.join(BASE_DIR, "data")
+    os.makedirs(data_dir, exist_ok=True)
 
     input_file = os.path.join(BASE_DIR, "data", "users.json")
     output_file = os.path.join(BASE_DIR, "data", "users.csv")
