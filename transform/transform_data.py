@@ -4,8 +4,6 @@ import pandas as pd
 
 from utils.logger import logger
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -20,7 +18,7 @@ def transform_data():
     try:
         logger.info("Reading JSON file...")
 
-        df = pd.read_json(input_file)
+        df = pd.read_json(input_file,orient="table")
 
         logger.info(f"Records before cleaning: {len(df)}")
 

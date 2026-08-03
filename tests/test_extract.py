@@ -12,11 +12,12 @@ class MockResponse:
     def json(self):
         return [
             {
-                "id": 1,
-                "name": "Testuser",
-                "username": "user1",
-                "email": "abc@gmail.com"
+                "id": i,
+                "name": f"User{i}",
+                "username": f"user{i}",
+                "email": f"user{i}@mail.com"
             }
+            for i in range(1,11)
         ]
 
 
@@ -36,4 +37,4 @@ def test_extract_data(monkeypatch):
         data = json.load(f)
 
     assert len(data) == 10
-    assert data[0]["name"] == "Leanne Graham"
+    assert data[0]["name"] == "User1"
