@@ -27,7 +27,7 @@ def test_transform_data(mock_read_json, mock_to_csv):
 
     mock_read_json.assert_called_once_with(
         input_file,
-        orient="table"
+        
     )
 
     assert sample_df["name"].tolist() == ["Alice", "Bob"]
