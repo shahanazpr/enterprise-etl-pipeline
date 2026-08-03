@@ -1,32 +1,51 @@
-from unittest.mock import patch, mock_open
-from extract.extract_api import extract_data,BASE_DIR
 import os
+import pandas as pd
+import pytest
+from unittest.mock import patch
+
+from transform.transform_data import transform_data, BASE_DIR
 
 
-@patch("extract.extract_api.json.dump")
-@patch("extract.extract_api.open", new_callable=mock_open)
-@patch("extract.extract_api.requests.get")
-def test_extract_data(mock_get, mock_file, mock_json_dump):
-    # Mock API response
-    mock_response = mock_get.return_value
-    mock_response.raise_for_status.return_value = None
-    mock_response.json.return_value = [
-        {
-            "id": 1,
-            "name": "Alice",
-            "username": "alice123",
-            "email": "alice@example.com"
-        }
-    ]
+@patch("transform.transform_data.pd.DataFrame.to_csv")
+@patch("transform.transform_data.pd.read_json")
+def test_transform_data(mock_read_json, mock_to_csv):
 
-    # Execute extraction
-    extract_data()
+    sample_df = pd.DataFrame({
+        "id": [1, 2],
+        "name": [" alice ", "BOB "],
+        "username": [" alice123 ", " bob456 "],
+        "email": [" ALICE@MAIL.COM ", " BOB@MAIL.COM "],
+        "phone": ["123-456", "789-012"],
+        "website": ["alice.com", "bob.com"]
+    })
 
-    # Verify API request
-    mock_get.assert_called_once()
+    mock_read_json.return_value = sample_df
 
-    # Verify file creation
-    mock_file.assert_called_once_with(os.path.join(BASE_DIR,"data","users.json"), "w")
+    transform_data()
 
-    # Verify JSON write
-    mock_json_dump.assert_called_once()
+    input_file = os.path.join(BASE_DIR, "data", "users.json")
+
+    mock_read_json.assert_called_once_with(
+        input_file,
+        orient="table"
+    )
+
+    assert sample_df["name"].tolist() == ["Alice", "Bob"]
+    assert sample_df["username"].tolist() == ["alice123", "bob456"]
+    assert sample_df["email"].tolist() == ["alice@mail.com", "bob@mail.com"]
+
+    output_file = os.path.join(BASE_DIR, "data", "users.csv")
+
+    mock_to_csv.assert_called_once_with(
+        output_file,
+        index=False
+    )
+
+
+@patch("transform.transform_data.pd.read_json")
+def test_transform_data_read_json_error(mock_read_json):
+
+    mock_read_json.side_effect = Exception("Failed to read JSON")
+
+    with pytest.raises(Exception, match="Failed to read JSON"):
+        transform_data()
