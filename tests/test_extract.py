@@ -1,5 +1,6 @@
 from unittest.mock import patch, mock_open
-from extract.extract_api import extract_data
+from extract.extract_api import extract_data,BASE_DIR
+import os
 
 
 @patch("extract.extract_api.json.dump")
@@ -25,7 +26,7 @@ def test_extract_data(mock_get, mock_file, mock_json_dump):
     mock_get.assert_called_once()
 
     # Verify file creation
-    mock_file.assert_called_once_with("data/users.json", "w")
+    mock_file.assert_called_once_with(os.path.join(BASE_DIR,"data","users.json"), "w")
 
     # Verify JSON write
     mock_json_dump.assert_called_once()
