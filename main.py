@@ -9,14 +9,22 @@ import os
 def main():
     print("\n===== Enterprise ETL Pipeline =====")
 
-    logger.info("ETL Pipeline Started")
+    logger.info("===== ETL Pipeline Started =====")
 
     try:
+        logger.info("Starting data extraction...")
         extract_data()
-        transform_data()
-        load_data()
+        logger.info("Data extraction completed.")
 
-        logger.info("ETL Pipeline Completed Successfully")
+        logger.info("Starting data transformation...")
+        df = transform_data()
+        logger.info("Data transformation completed.")
+
+        logger.info("Starting data loading...")
+        load_data(df)
+        logger.info("Data loading completed.")
+
+        logger.info("===== ETL Pipeline Completed Successfully =====")
         print("Pipeline completed successfully!")
 
     except Exception as e:
@@ -31,6 +39,7 @@ def main():
         )
 
         print("Pipeline failed!")
+        raise
 
 
 if __name__ == "__main__":
