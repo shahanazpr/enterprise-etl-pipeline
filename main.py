@@ -1,11 +1,11 @@
 from extract.extract_api import extract_data
 from transform.transform_data import transform_data
 from load.load_data import load_data
-from utils.logger import logger
+from utils.logger import logger,log_execution_time
 from notifications.notifier import send_email_alert
 import os
 
-
+@log_execution_time
 def main():
     print("\n===== Enterprise ETL Pipeline =====")
 

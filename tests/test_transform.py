@@ -24,7 +24,7 @@ def test_transform_data(mock_read_json, mock_to_csv):
 
     # Verify read_json was called
     input_file = os.path.join(BASE_DIR, "data", "users.json")
-    mock_read_json.assert_called_once_with(input_file, orient="table")
+    mock_read_json.assert_called_once_with(input_file)
 
     # Verify transformations
     assert sample_df["name"].tolist() == ["Alice", "Bob"]

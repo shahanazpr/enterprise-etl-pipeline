@@ -2,11 +2,12 @@ import os
 from pathlib import Path
 import pandas as pd
 
-from utils.logger import logger
+from utils.logger import logger,log_execution_time
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+@log_execution_time
 def transform_data():
      # Ensure the data directory exists
     data_dir = os.path.join(BASE_DIR, "data")
@@ -18,12 +19,19 @@ def transform_data():
     try:
         logger.info("Reading JSON file...")
 
-        df = pd.read_json(input_file,orient="table")
+        df = pd.read_json(input_file)
 
         logger.info(f"Records before cleaning: {len(df)}")
 
+        if len(df) == 0:
+            logger.warning("No records found in input file — nothing to transform.")
+
         # Remove duplicate records
+        before = len(df)
         df.drop_duplicates(subset=["id"], inplace=True)
+        removed = before - len(df)
+        if removed > 0:
+            logger.warning(f"Removed {removed} duplicate record(s).")
 
         # Remove leading/trailing spaces
         df["name"] = df["name"].str.strip()
