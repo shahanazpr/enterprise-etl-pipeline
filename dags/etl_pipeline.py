@@ -7,7 +7,6 @@ from transform.transform_data import transform_data
 from load.load_data import load_data
 from notifications.airflow_callback import notify_failure
 
-
 default_args = {
     "owner": "Shahanaz",
     "depends_on_past": False,
@@ -16,7 +15,6 @@ default_args = {
     "retry_delay": timedelta(minutes=5),
     "on_failure_callback": notify_failure,
 }
-
 
 with DAG(
     dag_id="enterprise_etl_pipeline",
