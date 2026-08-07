@@ -64,9 +64,9 @@ def extract_data():
             except ValidationError as e:
                 skipped_records += 1
                 logger.error(
-                    f"Skipping invalid record ID {record.get('id', 'Unknown')}: {e}"
+                    f"Validation failed for record ID {record.get('id', 'Unknown')}: {e}"
                 )
-
+                
         # Save only valid records
         with open(json_path, "w") as file:
             json.dump(valid_data, file, indent=4)

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Enterprise ETL Pipeline & Data Warehouse Synchronizer
 
 ## Overview
@@ -212,6 +213,8 @@ GitHub Actions automatically runs these tests whenever a Pull Request is created
 ---
 
 
+=======
+>>>>>>> origin/main
 ## Current Status
 
 ### Completed
@@ -225,6 +228,7 @@ GitHub Actions automatically runs these tests whenever a Pull Request is created
 - Pydantic Configuration
 - Retry Logic (Tenacity)
 - Logging
+<<<<<<< HEAD
 - Email Notifications
 - Unit Testing
 - Apache Airflow
@@ -256,3 +260,14 @@ Varshitha
 
 
 Developed as part of the Zaalima Development Internship.
+=======
+- Incremental Loading (UPSERT)
+- Unit Testing
+- GitHub Integration
+
+### Upcoming
+
+- Retry Logic
+- Apache Airflow
+- Docker
+>>>>>>> origin/main
