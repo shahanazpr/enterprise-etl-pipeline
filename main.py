@@ -21,7 +21,7 @@ def main():
         logger.info("Data transformation completed.")
 
         logger.info("Starting data loading...")
-        load_data(df)
+        load_data()
         logger.info("Data loading completed.")
 
         logger.info("===== ETL Pipeline Completed Successfully =====")
