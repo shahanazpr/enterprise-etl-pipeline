@@ -4,7 +4,7 @@
 
 This project is a production-style ETL (Extract, Transform, Load) pipeline developed in Python.
 
-The pipeline extracts user data from an external REST API, transforms it into a clean format, and loads it into a PostgreSQL database using SQLAlchemy for further analysis.
+The pipeline extracts user data from an external REST API, validates and transforms it, stores raw JSON data in AWS S3, and loads the processed data into a PostgreSQL database using SQLAlchemy.
 
 This project is being developed as part of the Zaalima Development Internship.
 
@@ -12,34 +12,40 @@ This project is being developed as part of the Zaalima Development Internship.
 
 ## Features
 
-- Extract data from REST APIs
-- Transform JSON data into CSV
-- Load data into PostgreSQL
-- SQLAlchemy ORM integration
-- Pydantic configuration using `.env`
-- Logging support
-- Modular project structure
-- Git version control
+* Extract data from REST APIs
+* Validate extracted data using Pydantic
+* Store raw JSON data in AWS S3
+* Organize S3 files by date
+* Retry failed S3 uploads
+* Transform JSON data into CSV
+* Load data into PostgreSQL
+* SQLAlchemy ORM integration
+* Environment-based configuration
+* Logging support
+* Modular project structure
+* Git version control
 
 ---
 
 ## Tech Stack
 
-- Python 3.14
-- Requests
-- Pandas
-- PostgreSQL
-- SQLAlchemy
-- Pydantic Settings
-- Logging
+* Python 3.14
+* Requests
+* Pandas
+* PostgreSQL
+* SQLAlchemy
+* Pydantic Settings
+* AWS S3
+* Boto3
+* Tenacity
+* Logging
 
 ---
 
 ## Project Structure
 
-```
+```text
 enterprise-etl-pipeline/
-
 ├── data/
 ├── docs/
 ├── extract/
@@ -84,8 +90,35 @@ DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=enterprise_etl
 
+AWS_ACCESS_KEY_ID=your_access_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
+AWS_REGION=ap-south-1
+S3_BUCKET_NAME=your_bucket_name
+
 LOG_LEVEL=INFO
 ```
+
+> Never commit real AWS credentials or other secrets to GitHub.
+
+---
+
+## AWS S3 Raw Data Storage
+
+The pipeline uploads extracted raw JSON data to the configured AWS S3 bucket.
+
+S3 objects are organized by date using the following structure:
+
+```text
+raw_data/YYYY-MM-DD/users.json
+```
+
+For example:
+
+```text
+raw_data/2026-08-10/users.json
+```
+
+Failed S3 uploads are automatically retried before the error is reported.
 
 ---
 
@@ -105,25 +138,44 @@ python main.py
 
 ---
 
+## Testing
+
+Run the test suite using:
+
+```bash
+python -m pytest
+```
+
+The current test suite has been verified with:
+
+```text
+8 passed, 1 skipped
+```
+
+---
+
 ## Current Status
 
 ### Completed
 
-- Project setup
-- API Extraction
-- Data Transformation
-- PostgreSQL Database Integration
-- SQLAlchemy ORM
-- Pydantic Configuration
-- Logging
-- GitHub Integration
+* Project setup
+* API Extraction
+* Data Validation
+* Data Transformation
+* PostgreSQL Database Integration
+* SQLAlchemy ORM
+* Pydantic Configuration
+* AWS S3 Raw Data Storage
+* Date-based S3 organization
+* S3 upload retry handling
+* Logging
+* Unit Testing
+* GitHub Integration
 
 ### Upcoming
 
-- Retry Logic
-- Apache Airflow
-- Docker
-- Unit Testing
+* Apache Airflow
+* Further pipeline monitoring improvements
 
 ---
 
@@ -133,16 +185,14 @@ python main.py
 
 ## Team Members
 
-Shahanaz p
+Shahanaz P
 
 Yuvadarshini R
 
 Kavitha
 
-Manasa v
+Manasa V
 
 Varshitha
-
-
 
 Developed as part of the Zaalima Development Internship.

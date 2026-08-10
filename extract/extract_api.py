@@ -79,9 +79,8 @@ def extract_data():
 
         # Upload JSON file to AWS S3
         upload_to_s3(
-            file_path=json_path,
-            bucket_name=settings.S3_BUCKET_NAME,
-            object_name="raw_data/users.json",
+        file_path=json_path,
+         bucket_name=settings.S3_BUCKET_NAME,
         )
 
     except requests.exceptions.RequestException as e:
