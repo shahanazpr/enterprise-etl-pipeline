@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from extract.extract_api import extract_data
 from transform.transform_data import transform_data
 from load.load_data import load_data
+from notifications.airflow_callback import notify_failure
 
 default_args = {
     "owner": "Shahanaz",
@@ -12,6 +13,7 @@ default_args = {
     "start_date": datetime(2026, 7, 21),
     "retries": 2,
     "retry_delay": timedelta(minutes=5),
+    "on_failure_callback": notify_failure,
 }
 
 with DAG(

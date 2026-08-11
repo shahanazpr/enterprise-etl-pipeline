@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 from sqlalchemy.orm import Session
 
-from database import SessionLocal
+from database.connection import SessionLocal
 from models.user import User
 from utils.logger import logger,log_execution_time
 
