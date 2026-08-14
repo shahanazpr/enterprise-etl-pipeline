@@ -36,33 +36,33 @@ This project is being developed as part of the Zaalima Development Internship.
 
 ## Features
 
-- Extract data from REST APIs
-- Validate extracted data using Pydantic
-- Store raw JSON data in AWS S3
-- Organize S3 files by date
-- Retry failed S3 uploads
-- Transform JSON data into CSV
-- Load data into PostgreSQL
-- SQLAlchemy ORM integration
-- Environment-based configuration
-- Logging support
-- Modular project structure
-- Git version control
+* Extract data from REST APIs
+* Validate extracted data using Pydantic
+* Store raw JSON data in AWS S3
+* Organize S3 files by date
+* Retry failed S3 uploads
+* Transform JSON data into CSV
+* Load data into PostgreSQL
+* SQLAlchemy ORM integration
+* Environment-based configuration
+* Logging support
+* Modular project structure
+* Git version control
 
 ---
 
 ## Tech Stack
 
-- Python 3.14
-- Requests
-- Pandas
-- PostgreSQL
-- SQLAlchemy
-- Pydantic Settings
-- AWS S3
-- Boto3
-- Tenacity
-- Logging
+* Python 3.14
+* Requests
+* Pandas
+* PostgreSQL
+* SQLAlchemy
+* Pydantic Settings
+* AWS S3
+* Boto3
+* Tenacity
+* Logging
 
 ---
 
@@ -199,18 +199,18 @@ Failed S3 uploads are automatically retried before the error is reported.
 
 ### Environment Variables
 
-| Variable | Description |
-|---|---|
-| API_URL | REST API endpoint used to fetch user data |
-| DB_HOST | PostgreSQL database host |
-| DB_PORT | PostgreSQL database port |
-| DB_NAME | PostgreSQL database name |
-| DB_USER | PostgreSQL username |
-| DB_PASSWORD | PostgreSQL password |
-| LOG_LEVEL | Logging level |
-| EMAIL_SENDER | Sender email address for notifications |
-| EMAIL_PASSWORD | Sender email password/app password |
-| EMAIL_RECEIVER | Recipient email address for alerts |
+| Variable       | Description                               |
+| -------------- | ----------------------------------------- |
+| API_URL        | REST API endpoint used to fetch user data |
+| DB_HOST        | PostgreSQL database host                  |
+| DB_PORT        | PostgreSQL database port                  |
+| DB_NAME        | PostgreSQL database name                  |
+| DB_USER        | PostgreSQL username                       |
+| DB_PASSWORD    | PostgreSQL password                       |
+| LOG_LEVEL      | Logging level                             |
+| EMAIL_SENDER   | Sender email address for notifications    |
+| EMAIL_PASSWORD | Sender email password/app password        |
+| EMAIL_RECEIVER | Recipient email address for alerts        |
 
 ---
 
@@ -248,31 +248,43 @@ GitHub Actions automatically runs these tests whenever a Pull Request is created
 
 ---
 
+## Apache Airflow Execution
+
+The ETL pipeline is orchestrated using Apache Airflow.
+
+The Airflow DAG automates the ETL workflow and allows the pipeline to be monitored and executed through the Airflow interface.
+
+![Airflow DAG Execution](docs/WhatsApp%20Image%202026-08-13%20at%2022.06.19.jpeg)
+
+---
+
 ## Current Status
 
 ### Completed
 
-- Project setup
-- API Extraction
-- Data Validation
-- Data Transformation
-- PostgreSQL Database Integration
-- SQLAlchemy ORM
-- Pydantic Configuration
-- AWS S3 Raw Data Storage
-- Date-based S3 organization
-- S3 upload retry handling
-- Logging
-- Email Notifications
-- Unit Testing
-- GitHub Integration
+* Project setup
+* API Extraction
+* Data Validation
+* Data Transformation
+* PostgreSQL Database Integration
+* SQLAlchemy ORM
+* Pydantic Configuration
+* AWS S3 Raw Data Storage
+* Date-based S3 organization
+* S3 upload retry handling
+* Logging
+* Email Notifications
+* Unit Testing
+* GitHub Integration
+* Apache Airflow
+* Airflow Pipeline Execution
+* Docker Support
+* Project Documentation
 
 ### Upcoming
 
-- Apache Airflow
-- Docker Support
-- Further pipeline monitoring improvements
-- Additional ETL enhancements
+* Further pipeline monitoring improvements
+* Additional ETL enhancements
 
 ---
 
@@ -282,11 +294,11 @@ GitHub Actions automatically runs these tests whenever a Pull Request is created
 
 ## Team Members
 
-- Shahanaz P
-- Yuvadarshini R
-- Kavitha KC
-- Manasa V
-- Varshitha
+* Shahanaz P
+* Yuvadarshini R
+* Kavitha KC
+* Manasa V
+* Varshitha
 
 ---
 
