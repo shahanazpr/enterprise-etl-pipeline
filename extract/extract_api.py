@@ -5,7 +5,8 @@ from pydantic import ValidationError
 from tenacity import retry, stop_after_attempt, wait_fixed
 
 from config import settings
-from utils.logger import logger,log_execution_time
+from utils.logger import logger, log_execution_time
+from utils.s3_upload import upload_to_s3
 from validation.user_model import User
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -75,6 +76,12 @@ def extract_data():
         if skipped_records > 0:
             logger.warning(f"Skipped {skipped_records} invalid records.")
         logger.info(f"JSON saved at: {json_path}")
+
+        # Upload JSON file to AWS S3
+        upload_to_s3(
+        file_path=json_path,
+         bucket_name=settings.S3_BUCKET_NAME,
+        )
 
     except requests.exceptions.RequestException as e:
         logger.error(f"API Error: {e}")

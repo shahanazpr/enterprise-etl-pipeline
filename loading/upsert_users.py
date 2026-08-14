@@ -1,3 +1,4 @@
+from pathlib import Path
 import pandas as pd
 
 from sqlalchemy.orm import Session
@@ -6,9 +7,14 @@ from database.connection import SessionLocal
 from models.user import User
 
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
 def upsert_users():
 
-    df = pd.read_csv("raw_data/cleaned_users.csv")
+    csv_file = BASE_DIR / "data" / "users.csv"
+
+    df = pd.read_csv(csv_file)
 
     session: Session = SessionLocal()
 
@@ -16,7 +22,7 @@ def upsert_users():
         for _, row in df.iterrows():
 
             existing_user = session.query(User).filter_by(
-                id=row["id"]
+                id=int(row["id"])
             ).first()
 
             if existing_user:
@@ -26,22 +32,16 @@ def upsert_users():
                 existing_user.email = row["email"]
                 existing_user.phone = row["phone"]
                 existing_user.website = row["website"]
-                existing_user.city = row["city"]
-                existing_user.zipcode = row["zipcode"]
-                existing_user.company_name = row["company_name"]
 
             else:
                 # Insert new record
                 new_user = User(
-                    id=row["id"],
+                    id=int(row["id"]),
                     name=row["name"],
                     username=row["username"],
                     email=row["email"],
                     phone=row["phone"],
                     website=row["website"],
-                    city=row["city"],
-                    zipcode=row["zipcode"],
-                    company_name=row["company_name"]
                 )
 
                 session.add(new_user)
@@ -52,11 +52,8 @@ def upsert_users():
 
     except Exception as e:
         session.rollback()
-        print("❌ Error:", e)
+        print(f"❌ Upsert failed: {e}")
+        raise
 
     finally:
         session.close()
-
-
-if __name__ == "__main__":
-    upsert_users()

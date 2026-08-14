@@ -4,6 +4,7 @@ import os
 load_dotenv()
 
 # API Key
+API_URL = os.getenv("API_URL")
 STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
 
 # Database Configuration

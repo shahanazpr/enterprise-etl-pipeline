@@ -4,7 +4,9 @@ from datetime import datetime, timedelta
 
 from extract.extract_api import extract_data
 from transform.transform_data import transform_data
-from load.load_data import load_data
+from loading.upsert_users import upsert_users
+from notifications.airflow_callback import notify_failure
+
 
 default_args = {
     "owner": "Shahanaz",
@@ -12,7 +14,9 @@ default_args = {
     "start_date": datetime(2026, 7, 21),
     "retries": 2,
     "retry_delay": timedelta(minutes=5),
+    "on_failure_callback": notify_failure,
 }
+
 
 with DAG(
     dag_id="enterprise_etl_pipeline",
@@ -34,8 +38,8 @@ with DAG(
     )
 
     load_task = PythonOperator(
-        task_id="load_data",
-        python_callable=load_data,
+        task_id="upsert_users",
+        python_callable=upsert_users,
     )
 
     extract_task >> transform_task >> load_task

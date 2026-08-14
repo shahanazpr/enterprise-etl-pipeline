@@ -3,10 +3,6 @@ from notifications.slack_alert import send_slack_message
 
 
 def notify_failure(context):
-    """
-    Airflow callback executed whenever a task fails.
-    """
-
     dag_id = context["dag"].dag_id
     task_id = context["task_instance"].task_id
     execution_date = context["execution_date"]
@@ -23,15 +19,16 @@ Error:
 {exception}
 """
 
-    # Email Alert
-    send_email(
-        subject=f"[FAILED] {dag_id}",
-        body=message,
-        receiver="admin@example.com"
-    )
+    try:
+        send_email(
+            subject=f"[FAILED] {dag_id}",
+            body=message,
+            receiver=None,
+        )
+    except Exception as e:
+        print(f"Email notification error: {e}")
 
-    # Slack Alert
-    send_slack_message(
-        message=message,
-        webhook_url="YOUR_SLACK_WEBHOOK_URL"
-    )
+    try:
+        send_slack_message(message)
+    except Exception as e:
+        print(f"Slack notification error: {e}")

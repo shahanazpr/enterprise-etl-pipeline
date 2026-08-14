@@ -1,9 +1,10 @@
 from extract.extract_api import extract_data
 from transform.transform_data import transform_data
-from load.load_data import load_data
-from utils.logger import logger,log_execution_time
+from loading.upsert_users import upsert_users
+from utils.logger import logger, log_execution_time
 from notifications.notifier import send_email_alert
 import os
+
 
 @log_execution_time
 def main():
@@ -21,7 +22,7 @@ def main():
         logger.info("Data transformation completed.")
 
         logger.info("Starting data loading...")
-        load_data(df)
+        upsert_users()
         logger.info("Data loading completed.")
 
         logger.info("===== ETL Pipeline Completed Successfully =====")
@@ -31,8 +32,8 @@ def main():
         logger.exception(f"ETL Pipeline Failed: {e}")
 
         send_email_alert(
-            sender=os.getenv("EMAIL_SENDER"),
-            password=os.getenv("EMAIL_PASSWORD"),
+            sender=os.getenv("SMTP_SENDER"),
+            password=os.getenv("SMTP_PASSWORD"),
             receiver=os.getenv("EMAIL_RECEIVER"),
             subject="ETL Pipeline Failed",
             body=str(e)
