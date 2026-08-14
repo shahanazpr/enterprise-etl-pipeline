@@ -16,6 +16,9 @@ def upload_to_s3(file_path, bucket_name, object_name=None):
     """
     Upload a file to an AWS S3 bucket with retry support.
     """
+    if not bucket_name:
+        logger.warning("S3 bucket not configured. Skipping S3 upload.")
+        return False
 
     if object_name is None:
         current_date = datetime.now().strftime("%Y-%m-%d")
