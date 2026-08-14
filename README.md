@@ -1,11 +1,10 @@
-<<<<<<< HEAD
 # Enterprise ETL Pipeline & Data Warehouse Synchronizer
 
 ## Overview
 
 This project is a production-style ETL (Extract, Transform, Load) pipeline developed in Python.
 
-The pipeline extracts user data from an external REST API, transforms it into a clean format, and loads it into a PostgreSQL database using SQLAlchemy for further analysis.
+The pipeline extracts user data from an external REST API, validates and transforms it, stores raw JSON data in AWS S3, and loads the processed data into a PostgreSQL database using SQLAlchemy.
 
 This project is being developed as part of the Zaalima Development Internship.
 
@@ -37,26 +36,33 @@ This project is being developed as part of the Zaalima Development Internship.
 
 ## Features
 
-- Extract data from REST APIs
-- Transform JSON data into CSV
-- Load data into PostgreSQL
-- SQLAlchemy ORM integration
-- Pydantic configuration using `.env`
-- Logging support
-- Modular project structure
-- Git version control
+* Extract data from REST APIs
+* Validate extracted data using Pydantic
+* Store raw JSON data in AWS S3
+* Organize S3 files by date
+* Retry failed S3 uploads
+* Transform JSON data into CSV
+* Load data into PostgreSQL
+* SQLAlchemy ORM integration
+* Environment-based configuration
+* Logging support
+* Modular project structure
+* Git version control
 
 ---
 
 ## Tech Stack
 
-- Python 3.14
-- Requests
-- Pandas
-- PostgreSQL
-- SQLAlchemy
-- Pydantic Settings
-- Logging
+* Python 3.14
+* Requests
+* Pandas
+* PostgreSQL
+* SQLAlchemy
+* Pydantic Settings
+* AWS S3
+* Boto3
+* Tenacity
+* Logging
 
 ---
 
@@ -148,7 +154,6 @@ pip install -r requirements.txt
 
 ---
 
-
 ## Environment Configuration
 
 Create a `.env` file with the following values:
@@ -162,25 +167,50 @@ DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=enterprise_etl
 
+AWS_ACCESS_KEY_ID=your_access_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
+AWS_REGION=ap-south-1
+S3_BUCKET_NAME=your_bucket_name
+
 LOG_LEVEL=INFO
 ```
 
+> Never commit real AWS credentials or other secrets to GitHub.
+
 ---
+
+## AWS S3 Raw Data Storage
+
+The pipeline uploads extracted raw JSON data to the configured AWS S3 bucket.
+
+S3 objects are organized by date using the following structure:
+
+```text
+raw_data/YYYY-MM-DD/users.json
+```
+
+For example:
+
+```text
+raw_data/2026-08-10/users.json
+```
+
+Failed S3 uploads are automatically retried before the error is reported.
 
 ### Environment Variables
 
-| Variable | Description |
-|----------|-------------|
-| API_URL | REST API endpoint used to fetch user data |
-| DB_HOST | PostgreSQL database host |
-| DB_PORT | PostgreSQL database port |
-| DB_NAME | PostgreSQL database name |
-| DB_USER | PostgreSQL username |
-| DB_PASSWORD | PostgreSQL password |
-| LOG_LEVEL | Logging level |
-| EMAIL_SENDER | Sender email address for notifications |
-| EMAIL_PASSWORD | Sender email password/app password |
-| EMAIL_RECEIVER | Recipient email address for alerts |
+| Variable       | Description                               |
+| -------------- | ----------------------------------------- |
+| API_URL        | REST API endpoint used to fetch user data |
+| DB_HOST        | PostgreSQL database host                  |
+| DB_PORT        | PostgreSQL database port                  |
+| DB_NAME        | PostgreSQL database name                  |
+| DB_USER        | PostgreSQL username                       |
+| DB_PASSWORD    | PostgreSQL password                       |
+| LOG_LEVEL      | Logging level                             |
+| EMAIL_SENDER   | Sender email address for notifications    |
+| EMAIL_PASSWORD | Sender email password/app password        |
+| EMAIL_RECEIVER | Recipient email address for alerts        |
 
 ---
 
@@ -200,44 +230,61 @@ python main.py
 
 ---
 
-## Running Unit Tests
+## Testing
 
-Run all tests using:
+Run the test suite using:
 
 ```bash
-pytest
+python -m pytest
+```
+
+The current test suite has been verified with:
+
+```text
+8 passed, 1 skipped
 ```
 
 GitHub Actions automatically runs these tests whenever a Pull Request is created.
 
 ---
 
+## Apache Airflow Execution
 
-=======
->>>>>>> origin/main
+The ETL pipeline is orchestrated using Apache Airflow.
+
+The Airflow DAG automates the ETL workflow and allows the pipeline to be monitored and executed through the Airflow interface.
+
+![Airflow DAG Execution](docs/WhatsApp%20Image%202026-08-13%20at%2022.06.19.jpeg)
+
+---
+
 ## Current Status
 
 ### Completed
 
-- Project Setup
-- API Extraction
-- Data Validation
-- Data Transformation
-- PostgreSQL Integration
-- SQLAlchemy ORM
-- Pydantic Configuration
-- Retry Logic (Tenacity)
-- Logging
-<<<<<<< HEAD
-- Email Notifications
-- Unit Testing
-- Apache Airflow
-- GitHub Actions CI
+* Project setup
+* API Extraction
+* Data Validation
+* Data Transformation
+* PostgreSQL Database Integration
+* SQLAlchemy ORM
+* Pydantic Configuration
+* AWS S3 Raw Data Storage
+* Date-based S3 organization
+* S3 upload retry handling
+* Logging
+* Email Notifications
+* Unit Testing
+* GitHub Integration
+* Apache Airflow
+* Airflow Pipeline Execution
+* Docker Support
+* Project Documentation
 
 ### Upcoming
 
-- Docker Support
-- Additional ETL Enhancements
+* Further pipeline monitoring improvements
+* Additional ETL enhancements
 
 ---
 
@@ -247,27 +294,12 @@ GitHub Actions automatically runs these tests whenever a Pull Request is created
 
 ## Team Members
 
-Shahanaz p
+* Shahanaz P
+* Yuvadarshini R
+* Kavitha KC
+* Manasa V
+* Varshitha
 
-Yuvadarshini R
+---
 
-Kavitha
-
-Manasa v
-
-Varshitha
-
-
-
-Developed as part of the Zaalima Development Internship.
-=======
-- Incremental Loading (UPSERT)
-- Unit Testing
-- GitHub Integration
-
-### Upcoming
-
-- Retry Logic
-- Apache Airflow
-- Docker
->>>>>>> origin/main
+# Developed as part of the Zaalima Development Internship.
