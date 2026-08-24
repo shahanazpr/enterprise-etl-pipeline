@@ -48,11 +48,11 @@ def upsert_users():
 
         session.commit()
 
-        print("✅ Upsert completed successfully!")
+        print("Upsert completed successfully!")
 
     except Exception as e:
         session.rollback()
-        print(f"❌ Upsert failed: {e}")
+        print(f"Upsert failed: {e}")
         raise
 
     finally:
